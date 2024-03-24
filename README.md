@@ -50,4 +50,7 @@ The hard coded value in `index-embedded.html`.
 
 ## V2
 
-V2 will probably be an attempt using the legacy/primary/4001 one site as a proxy to 4002 so consumers don't know we have two sites.
+Action Items for V2
+
+* Proxy the flutter application side through/via the static site.
+* Demonstrate message channel communication between the primary site app and the embedded flutter applications
