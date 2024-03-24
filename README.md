@@ -48,9 +48,7 @@ The hard coded value in `index-embedded.html`.
   <base href="http://localhost:4002">
 ```
 
-## V2
-
-Action Items for V2
+## Future
 
 * Proxy the flutter application side through/via the static site.
 * Demonstrate message channel communication between the primary site app and the embedded flutter applications
