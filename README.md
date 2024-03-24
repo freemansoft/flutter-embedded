@@ -30,15 +30,17 @@ You can change the value as part `flutter build web --base-href "http://localhos
 
 This runs the same flutter app as an iframe and inside the element tree.
 The standard _Flutter_ created `index.html` works fine for standalone.
-Running in a div requres severfal changes change to the template created `index.html`
+Running in a div requires several changes to the Flutter template created `index.html`
 
-1. Change the way flutter is loaded
-2. Find the element we are replacing
-3. Change the base href
+1. Add a query to find the element that is being replaced
+1. Change the way flutter is loaded in `window.addEventListener('load', function(ev)` and have it replace the element found above.
+1. Change the base href that tells Flutter how to access additional resources
 
-A new file `index-embedded.html` was created instead of modifying `index.html` so developers can compare the two.
-It isn't part of the normal "build web" process so it is hard coded to set the `<base href>`.
-Applications that only run inside an element can change the window load behavior and then set the `base` at build time.
+`index-embedded.html` is used when embedding.  It was created by copying `index.html` instead of modifying `index.html`.
+This lets us run in either mode by selecting the appropriate html file and lets developers compare the two for differences.
+Applications that _only_ run inside an element may chose to update `index.html` and set the `base` at build time using standard flutter tooling
+
+* Note: `index-embedded.html` isn't part of the normal "build web" process so it is hard coded to set the `<base href>`.
 
 The hard coded value in `index-embedded.html`.
 
