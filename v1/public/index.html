@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        // The loaded flutter application index.html looks for a query parameter "flutter_element_name"
+        // This gets a flutter.js error
+        $(function () {
+            $("#insert_here").load("http://localhost:4002/index-embedded.html");
+        });
+    </script>
+    <title>Embedding Application</title>
+</head>
+
+<body>
+    <h1>Multi Flutter Application</h1>
+    <hr>
+    <!-- Run this web app as an iframe -->
+    <h2>App as an iFrame</h2>
+    <div>
+        <iframe src="http://localhost:4002/index.html" width="200" height="200" frameborder="0"
+            scrolling="no"></iframe>
+    </div>
+    <hr>
+    <!-- Run this web app in this page via element replacement -->
+    <h2>Flutter started from a script</h2>
+    <div id="insert_here" style=" width: 200px; height: 200px;"></div>
+    <hr>
+</body>
+
+</html>
