@@ -1,4 +1,4 @@
-# Demonstrating pulling a flutter app into an iFrame or doing element replacement
+# Demonstrating embedding a flutter app in an iFrame or via element replacement
 
 Sometimes you want to do an incremental migration from your existing web patter to flutter.
 Or you are adding some flutter capability to an existing web application.
