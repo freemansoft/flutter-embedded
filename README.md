@@ -50,4 +50,4 @@ The hard coded value in `index-embedded.html`.
 
 ## V2
 
-V2 wasn't needed because I got this working for the demo.  Originally I tried using query parameters and that didn't work so I hardcoded the path ikn V1
+V2 will probably be an attempt using the legacy/primary/4001 one site as a proxy to 4002 so consumers don't know we have two sites.
