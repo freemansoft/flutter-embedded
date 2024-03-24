@@ -54,3 +54,4 @@ Action Items for V2
 
 * Proxy the flutter application side through/via the static site.
 * Demonstrate message channel communication between the primary site app and the embedded flutter applications
+* Look at ways of eliminating 'unsafe-inline' and 'unsafe-eval' in ContentSecurityPolicyOptions in `server.dart`.  Left in for now to simplify.
