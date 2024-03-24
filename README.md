@@ -10,7 +10,7 @@ This simulates a dual site by running two web servers, one representing the old 
 
 * 4001 - represents the existing web site and holds only static content for the example
   * index.html - loads localhost:4002 two ways,
-    * as an iFrame an
+    * as an iFrame via loading the flutter_applications `index.html`
     * as an element replacement via a loading the flutter_application's `index-embedded.html`
 * 4002 - represents the new flutter web site. The flutter app is on the root.
   * index.html - standard flutter
