@@ -43,8 +43,8 @@ graph TD
   counter-->flutterPostMessage
   flutterPostMessage--postMessage-->messageReceive
 
-  classDef orange fill:#421,stroke:#333,stroke-width:2px;
-  classDef green fill:#243,stroke:#333,strong-width:2px;
+  classDef orange fill:#c63,stroke:#333,stroke-width:2px;
+  classDef green fill:#6c9,stroke:#333,strong-width:2px;
   class staticIndex,flutterIndex,flutterIndexEmbedded orange
   class flutter green
 
