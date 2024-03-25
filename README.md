@@ -1,12 +1,22 @@
 # Demonstrating embedding a flutter app in an iFrame or via element replacement
 
-Sometimes you want to do an incremental migration from your existing web patter to flutter.
-Or you are adding some flutter capability to an existing web application.
-This means that you want to run flutter _inside_ or _inserted_ into an existing web application.
+Sometimes you want to do an incremental migration from your existing web application to flutter flow by flow.
+Other times you are adding some flutter capability to an existing web application.
+This means that you want to run flutter code _inside_ or _inserted_ into an existing web application.
+
+The topology and technique you choose impacts the complexity of the situtation especially when it comes to browser protections, CORS and cross site scripting.
+The simplest to most complex topologies probably are
+
+1. Run a single site containing both apps.
+2. Run two sites with the new site proxied through the original site.
+3. Run dual site where the original site refers to or loads the new flutter site in iFrames .
+4. Run dual site where the original site refers to or loads the new flutter site in an element.
 
 ## V1
 
-This simulates a dual site by running two web servers, one representing the old site and the other representing the new flutter based web application or component.
+V1 implments #3 and #4.
+It simulates a dual site by running two web servers.
+One server is the _old site_ and the other is the _new flutter based web application or component_.
 
 ```mermaid
 graph TD
