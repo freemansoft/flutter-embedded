@@ -16,7 +16,7 @@ graph TD
       loads 4002:index.html")
 
       elementLoad[["Javascript:
-      element FLUTTER_DIV_ELEMENT onload
+      onload() element FLUTTER_DIV_ELEMENT
       loads 4002:index-embedded.html"]]
 
       elementFlutterDiv("element:
