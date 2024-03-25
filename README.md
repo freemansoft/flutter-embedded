@@ -8,6 +8,48 @@ This means that you want to run flutter _inside_ or _inserted_ into an existing 
 
 This simulates a dual site by running two web servers, one representing the old site and the other representing the new flutter based web application or component.
 
+```mermaid
+graph TD
+  subgraph 4001[Static Site : 4001]
+    subgraph staticIndex[index.html]
+      elementLoad[[Javascript: element FLUTTER_DIV_ELEMENT onload<br/;>loads 4002:index-embedded.html]]
+      messageReceive[[Javascript: Message Receive<br/;>pointed at MESSAGE_RESULTS_DIV]]
+      iFrame(iFrame <br/;> loads 4002:index.html)
+      elementFlutterDiv(element FLUTTER_DIV_ELEMENT)
+      elementMessage(element MESSAGE_RESULTS_DIV)
+    end
+  end
+
+  subgraph 4002[FLutter Site : 4002]
+    subgraph flutterIndexEmbedded[index-embedded.html]
+      flutterIndexLoadEmbedded[[Javascript: load Flutter app<br/;>Replace FLUTTER_DIV_ELEMENT]]
+    end
+    subgraph flutterIndex[index.html]
+      flutterIndexLoad[[Javascript: load Flutter app<br/;>Replaces iFrame root]]
+    end
+    subgraph flutter[Flutter Application]
+      counter[[Increment counter]]
+      flutterPostMessage[[Post Message<br/;>to Window]]
+    end
+  end
+
+  elementLoad-.loads.->flutterIndexLoadEmbedded
+  iFrame-.loads.->flutterIndexLoad
+  messageReceive--appends-->elementMessage
+
+  flutterIndexLoad-.loads and starts.->flutter
+  flutterIndexLoadEmbedded-.loads and starts.->flutter
+  flutterIndexLoadEmbedded-.replaces.->elementFlutterDiv
+  counter-->flutterPostMessage
+  flutterPostMessage--postMessage-->messageReceive
+
+  classDef orange fill:#421,stroke:#333,stroke-width:2px;
+  classDef green fill:#243,stroke:#333,strong-width:2px;
+  class staticIndex,flutterIndex,flutterIndexEmbedded orange
+  class flutter green
+
+```
+
 * 4001 - represents the existing web site and holds only static content for the example
   * index.html - loads localhost:4002 two ways,
     * as an iFrame via loading the flutter_applications `index.html`
