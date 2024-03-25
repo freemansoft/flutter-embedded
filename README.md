@@ -1,4 +1,4 @@
-# Demonstrating embedding a flutter app in an iFrame or via element replacement
+# Demonstrating flutter app embedding in an iFrame or via element replacement
 
 Sometimes you want to do an incremental migration from your existing web application to flutter flow by flow.
 Other times you are adding some flutter capability to an existing web application.
@@ -14,7 +14,7 @@ The simplest to most complex topologies probably are
 
 ## V1
 
-V1 implments #3 and #4.
+V1 implements #3 and #4.
 It simulates a dual site by running two web servers.
 One server is the _old site_ and the other is the _new flutter based web application or component_.
 
