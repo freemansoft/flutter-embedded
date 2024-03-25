@@ -9,8 +9,26 @@
         // The loaded flutter application index.html looks for a query parameter "flutter_element_name"
         // This gets a flutter.js error
         $(function () {
-            $("#insert_here").load("http://localhost:4002/index-embedded.html");
+            $("#FLUTTER_DIV_ELEMENT").load("http://localhost:4002/index-embedded.html");
         });
+    </script>
+    <script>
+        const iframe = document.getElementById('FLUTTER-IFRAME');
+        window.addEventListener("message", handleMessage);
+
+        // The flutter app posts to window and window parent if available
+        // If running in iframe then message destined for parent is received here
+        // If running not in iframe then parent and window are the same
+        //    and message destined for parent AND window is received here
+        // Using createTextNode which does not accept HTML markup
+        function handleMessage(e) {
+            console.log("Message Received" + e.data);
+            var data = JSON.parse(e.data);
+            console.log("Count: " + data.count);
+            var theDiv = document.getElementById("MESSAGE_RESULTS_DIV");
+            var content = document.createTextNode(e.data);
+            theDiv.appendChild(content);
+        }
     </script>
     <title>Embedding Application</title>
 </head>
@@ -21,14 +39,15 @@
     <!-- Run this web app as an iframe -->
     <h2>App as an iFrame</h2>
     <div>
-        <iframe src="http://localhost:4002/index.html" width="200" height="200" frameborder="0"
+        <iframe id="FLUTTER-IFRAME" src="http://localhost:4002/index.html" width="200" height="200" frameborder="0"
             scrolling="no"></iframe>
     </div>
     <hr>
     <!-- Run this web app in this page via element replacement -->
     <h2>Flutter started from a script</h2>
-    <div id="insert_here" style=" width: 200px; height: 200px;"></div>
+    <div id="FLUTTER_DIV_ELEMENT" style=" width: 200px; height: 200px;"></div>
     <hr>
+    <div id="MESSAGE_RESULTS_DIV"> </div>
 </body>
 
 </html>

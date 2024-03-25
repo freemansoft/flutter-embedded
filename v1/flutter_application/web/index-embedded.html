@@ -46,7 +46,7 @@
 
     // See if a query parameter was passed in and use that to find the target
     window.addEventListener('load', function(ev) {
-      let target = document.querySelector("#insert_here");
+      let target = document.querySelector("#FLUTTER_DIV_ELEMENT");
       _flutter.loader.loadEntrypoint({
         onEntrypointLoaded: async function (engineInitializer) {
           let appRunner = await engineInitializer.initializeEngine({

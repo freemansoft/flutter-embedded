@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import "package:universal_html/html.dart" as html;
 
 void main() {
   runApp(const MyApp());
@@ -65,6 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+      _sendDidIncrementMessage(count: _counter);
     });
   }
 
@@ -121,5 +125,29 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  /// Send the message if we knew where
+  void _sendDidIncrementMessage({required int count}) {
+    final Map<String, dynamic> data = {"count": count};
+
+    // use html.window.parent if we are in an iframe
+    if (html.window.parent != null) {
+      data["location"] = html.window.parent!.location.toString();
+      final json = const JsonEncoder().convert(data);
+      debugPrint('Message fired: $json to parent.');
+      html.window.parent!.postMessage(json, "*");
+    }
+
+    // if there is no parent or the parent and window are different
+    // This will be true if in iframe but no one will receive it
+    if (html.window.parent == null ||
+        html.window.parent!.location.toString() !=
+            html.window.location.toString()) {
+      data["location"] = html.window.location.toString();
+      final json = const JsonEncoder().convert(data);
+      debugPrint('Message fired: $json to window.');
+      html.window.postMessage(json, "*");
+    }
   }
 }
