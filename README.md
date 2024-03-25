@@ -12,47 +12,60 @@ This simulates a dual site by running two web servers, one representing the old 
 graph TD
   subgraph 4001[Static Site : 4001]
     subgraph staticIndex[index.html]
-      iFrame(iFrame <br/;> loads 4002:index.html)
-      elementFlutterDiv(element FLUTTER_DIV_ELEMENT)
+      iFrame("iFrame
+      loads 4002:index.html")
 
-      elementLoad[[Javascript: element FLUTTER_DIV_ELEMENT onload<br/;>loads 4002:index-embedded.html]]
+      elementLoad[["Javascript:
+      element FLUTTER_DIV_ELEMENT onload
+      loads 4002:index-embedded.html"]]
 
-      messageReceive[[Javascript: Message Receive<br/;>pointed at MESSAGE_RESULTS_DIV]]
-      elementMessage(element MESSAGE_RESULTS_DIV)
+      elementFlutterDiv("element:
+      FLUTTER_DIV_ELEMENT
+      Replaced by Flutter index-embedded.html")
+
+      messageReceive[["Javascript:
+      widnowEventListener()
+      Message Receive"]]
+      elementMessage("element:
+      MESSAGE_RESULTS_DIV")
     end
   end
 
-  subgraph 4002[Flutter Site : 4002]
-    subgraph flutterWebPackage[Flutter Web Package]
+  subgraph 4002[Flutter Site : 4002 Flutter Web Package]
       subgraph flutterIndex[index.html]
-        flutterIndexLoad[[Javascript: load Flutter app<br/;>Replaces iFrame root]]
+        flutterIndexLoad[["Javascript:
+        load Flutter app
+        Replaces iFrame root"]]
       end
       subgraph flutterIndexEmbedded[index-embedded.html]
-        flutterIndexLoadEmbedded[[Javascript: load Flutter app<br/;>Replace FLUTTER_DIV_ELEMENT]]
+        flutterIndexLoadEmbedded[["Javascript:
+        load Flutter app
+        Replace FLUTTER_DIV_ELEMENT"]]
       end
       subgraph flutter[Flutter Web App]
-        flutterPostMessage[[Post Message<br/;>to Window]]
+        flutterPostMessage[["Post Message to Window"]]
         counter[[Increment counter]]
+        displayWidget
       end
-    end
   end
 
   elementLoad-.loads.->flutterIndexLoadEmbedded
   iFrame-.loads.->flutterIndexLoad
 
-  flutterIndexLoad-.loads and starts.->flutter
   flutterIndexLoadEmbedded-.loads and starts.->flutter
-  flutterIndexLoadEmbedded-.replaces.->elementFlutterDiv
+  flutterIndexLoad-.loads and starts.->flutter
+  flutterIndexLoadEmbedded-.replaces element.->elementFlutterDiv
   counter-->flutterPostMessage
+  counter--setState()-->displayWidget
 
-  flutterPostMessage--postMessage-->messageReceive
+  flutterPostMessage--postMessage()-->messageReceive
   messageReceive--appends-->elementMessage
 
 
   classDef orange fill:#c63,stroke:#333,stroke-width:2px;
   classDef blue fill:#69c,stroke:#333,strong-width:2px;
   class staticIndex,flutterIndex,flutterIndexEmbedded orange
-  class flutterWebPackage blue
+  class flutter blue
 
 ```
 
