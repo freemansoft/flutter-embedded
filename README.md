@@ -19,6 +19,21 @@ It simulates a dual site by running two web servers.
 One server is the _old site_ and the other is the _new flutter based web application or component_.
 
 ```mermaid
+graph TB
+  Browser
+  StaticSite[Static Site 4001]
+  FlutterApp[Flutter App on 4001]
+
+  Browser--loads html from-->StaticSite
+  Browser-.displays in iFrame.->FlutterApp
+  Browser-.displays via element replacement.->FlutterApp
+```
+
+### Drilling Down
+
+The HTML loaded from the static site loads the Flutter applications creates linkages between the HTML page and those running flugger engines via in page JavaSCript
+
+```mermaid
 graph TB;
   subgraph 4001[Static Site : 4001]
     subgraph staticIndex[index.html]
