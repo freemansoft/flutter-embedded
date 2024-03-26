@@ -184,7 +184,7 @@ The Javascript posts messages to the window listener via the window and parent w
 The Flutter application has an `onMessage()` handler that calls the internal `increment()` method if the `action` is `increment`.  It ignores all other messages that don't contain `{"action":"increment"}`;
 
 ```mermaid
-graph LR;
+graph TB;
   subgraph 4001[Static Site : 4001]
     subgraph staticIndex[index.html]
 
