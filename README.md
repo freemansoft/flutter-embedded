@@ -34,17 +34,17 @@ graph TB
 The HTML loaded from the static site loads the Flutter applications creates linkages between the HTML page and those running flugger engines via in page JavaSCript
 
 ```mermaid
-graph TB;
+graph LR;
   subgraph 4001[Static Site : 4001]
     subgraph staticIndex[index.html]
       iFrame("iFrame
       loads 4002:index.html")
 
-      elementLoad[["Javascript:
+      javascriptElementLoad[["Javascript:
       onload() element FLUTTER_DIV_ELEMENT
       loads 4002:index-embedded.html"]]
 
-      elementFlutterDiv("element:
+      htmlElementDiv("element:
       FLUTTER_DIV_ELEMENT
       Replaced by Flutter index-embedded.html")
 
@@ -56,10 +56,10 @@ graph TB;
       onClick()
       Message Send"]]
 
-      messageReceive[["Javascript:
-      widnowEventListener()
+      javascriptWindowEventListener[["Javascript:
+      windowEventListener()
       Message Receive"]]
-      elementMessage("element:
+      htmlElementMessage("element:
       MESSAGE_RESULTS_DIV")
     end
   end
@@ -78,30 +78,18 @@ graph TB;
       subgraph flutter[Flutter Web App]
         flutterButtonPlus[["+ button"]]
         flutterPostMessage[["Post Message to Window"]]
-        counter[[Increment counter]]
-        displayWidget
-        onMessageFlutter[["html.window.onMessage.listen"]]
+        flutterCounter[[Increment counter]]
+        flutterDisplayWidget
+        flutterOnMessage[["html.window.onMessage.listen"]]
       end
   end
 
-  elementLoad-.loads.->flutterIndexEmbedded
+  javascriptElementLoad-.loads.->flutterIndexEmbedded
   iFrame-.loads.->flutterIndex
 
-  javascriptButton1 -."onClick()".-> javascriptMessagePost
-  javascriptButton2 -."onClick()".-> javascriptMessagePost
-  javascriptMessagePost -.postMessage( {action:increment}).->onMessageFlutter
-  onMessageFlutter--"increment()"-->counter
-  flutterButtonPlus--"increment()"-->counter
-
-  flutterIndexLoadEmbedded-.loads and starts.->flutter
-  flutterIndexLoad-.loads and starts.->flutter
-  flutterIndexLoadEmbedded-.replaces element.->elementFlutterDiv
-  counter-->flutterPostMessage
-  counter--setState()-->displayWidget
-
-  flutterPostMessage-.postMessage( {action:incremented} ).->messageReceive
-  messageReceive--appends-->elementMessage
-
+  flutterIndexLoadEmbedded-.loads and starts in frame.->flutter
+  flutterIndexLoad-.loads and starts in iFrame.->flutter
+  flutterIndexLoadEmbedded-.replaces element.->htmlElementDiv
 
   classDef orange fill:#c63,stroke:#333,stroke-width:2px;
   classDef blue fill:#69c,stroke:#333,strong-width:2px;
@@ -153,10 +141,74 @@ The hard coded value in `index-embedded.html`.
 ## Demonstrate communication from Flutter to the hosting HTML page
 
 This program demonstrates Flutter to Javascript communication. Flutter notifies the wrapper HTML via the window's `postMessage()`. The example can be modified for ReactJS or other web frameworks.
-
 The flutter application posts messages to the window listener in static HTML page hosting both the iFrame and the replaced element. The message has an attribute `{"action":"incremented"}`.
-
 The embedding HTML page has a Javascript handler that logs received events to a text area in the main page and to the console. It filters out messages that don't contain `{"action":"incremented}`
+
+```mermaid
+graph LR;
+  subgraph 4001[Static Site : 4001]
+    subgraph staticIndex[index.html]
+      iFrame("iFrame
+      loads 4002:index.html")
+
+      javascriptElementLoad[["Javascript:
+      onload() element FLUTTER_DIV_ELEMENT
+      loads 4002:index-embedded.html"]]
+
+      htmlElementDiv("element:
+      FLUTTER_DIV_ELEMENT
+      Replaced by Flutter index-embedded.html")
+
+      javascriptButton1("button:
+      target:window")
+      javascriptButton2("button:
+      target:parent")
+      javascriptMessagePost[["javascript:
+      onClick()
+      Message Send"]]
+
+      javascriptWindowEventListener[["Javascript:
+      windowEventListener()
+      Message Receive"]]
+      htmlElementMessage("element:
+      MESSAGE_RESULTS_DIV")
+    end
+  end
+
+  subgraph 4002[Flutter Site : 4002 Flutter Web Package]
+      subgraph flutterIndex[index.html]
+        flutterIndexLoad[["Javascript:
+        load Flutter app
+        Replaces iFrame root"]]
+      end
+      subgraph flutterIndexEmbedded[index-embedded.html]
+        flutterIndexLoadEmbedded[["Javascript:
+        load Flutter app
+        Replace FLUTTER_DIV_ELEMENT"]]
+      end
+      subgraph flutter[Flutter Web App]
+        flutterButtonPlus[["+ button"]]
+        flutterPostMessage[["Post Message to Window"]]
+        flutterCounter[[Increment counter]]
+        flutterDisplayWidget
+        flutterOnMessage[["html.window.onMessage.listen"]]
+      end
+  end
+
+  flutterButtonPlus-.onPressed().->flutterCounter
+  flutterCounter-->flutterPostMessage
+  flutterCounter--setState()-->flutterDisplayWidget
+
+  flutterPostMessage-.postMessage( {action:incremented} ).->javascriptWindowEventListener
+  javascriptWindowEventListener--appends-->htmlElementMessage
+
+
+  classDef orange fill:#c63,stroke:#333,stroke-width:2px;
+  classDef blue fill:#69c,stroke:#333,strong-width:2px;
+  class staticIndex,flutterIndex,flutterIndexEmbedded orange
+  class flutter blue
+
+```
 
 1. For the element replacement, the launching HTML is the same window the element is in.
    1. This shows up as a location of `http://localhost:4001` in the demo in the HTML and the javascript console. This is the static content's location.
@@ -169,10 +221,78 @@ The embedding HTML page has a Javascript handler that logs received events to a 
 ## Demonstrates communication from the HTML page to a flutter application
 
 This program demonstrates Javascript to Flutter using window message channels. The web page JavaSCript notifies the Flutter application on the window's _message_ channel via a `postMessage()`. This example can be modified to use other frameworks to post the message.
-
 The Javascript posts messages to the window listener via the window and parent window.  The message has an attribute  `{"action":"increment"}`
-
 The Flutter application has an `onMessage()` handler that calls the internal `increment()` method if the `action` is `increment`.  It ignores all other messages that don't contain `{"action":"increment"}`;
+
+```mermaid
+graph LR;
+  subgraph 4001[Static Site : 4001]
+    subgraph staticIndex[index.html]
+      iFrame("iFrame
+      loads 4002:index.html")
+
+      javascriptElementLoad[["Javascript:
+      onload() element FLUTTER_DIV_ELEMENT
+      loads 4002:index-embedded.html"]]
+
+      htmlElementDiv("element:
+      FLUTTER_DIV_ELEMENT
+      Replaced by Flutter index-embedded.html")
+
+      javascriptButton1("button:
+      target:window")
+      javascriptButton2("button:
+      target:parent")
+      javascriptMessagePost[["javascript:
+      onClick()
+      Message Send"]]
+
+      javascriptWindowEventListener[["Javascript:
+      windowEventListener()
+      Message Receive"]]
+      htmlElementMessage("element:
+      MESSAGE_RESULTS_DIV")
+    end
+  end
+
+  subgraph 4002[Flutter Site : 4002 Flutter Web Package]
+      subgraph flutter[Flutter Web App]
+        flutterButtonPlus[["+ button"]]
+        flutterPostMessage[["Post Message to Window"]]
+        flutterCounter[[Increment counter]]
+        flutterDisplayWidget
+        flutterOnMessage[["html.window.onMessage.listen"]]
+      end
+     subgraph flutterIndex[index.html]
+        flutterIndexLoad[["Javascript:
+        load Flutter app
+        Replaces iFrame root"]]
+      end
+      subgraph flutterIndexEmbedded[index-embedded.html]
+        flutterIndexLoadEmbedded[["Javascript:
+        load Flutter app
+        Replace FLUTTER_DIV_ELEMENT"]]
+      end
+   end
+
+
+  javascriptButton1 -."onClick()".-> javascriptMessagePost
+  javascriptButton2 -."onClick()".-> javascriptMessagePost
+  javascriptMessagePost -.postMessage( {action:increment}).->flutterOnMessage
+  flutterOnMessage--"increment()"-->flutterCounter
+
+  flutterCounter-->flutterPostMessage
+  flutterCounter--setState()-->flutterDisplayWidget
+
+  flutterPostMessage-.postMessage( {action:incremented} ).->javascriptWindowEventListener
+
+
+  classDef orange fill:#c63,stroke:#333,stroke-width:2px;
+  classDef blue fill:#69c,stroke:#333,strong-width:2px;
+  class staticIndex,flutterIndex,flutterIndexEmbedded orange
+  class flutter blue
+
+```
 
 ## Sample logs
 
