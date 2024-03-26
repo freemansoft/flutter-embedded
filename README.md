@@ -130,7 +130,7 @@ The flutter application posts messages to the window listener in static HTML pag
 The embedding HTML page has a Javascript handler that logs received events to a text area in the main page and to the console. It filters out messages that don't contain `{"action":"incremented}`
 
 ```mermaid
-graph LR;
+graph TB;
   subgraph 4001[Static Site : 4001]
     subgraph staticIndex[index.html]
 
