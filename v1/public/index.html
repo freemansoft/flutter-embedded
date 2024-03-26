@@ -55,7 +55,7 @@
     <hr/>
     <div>Both buttons are picked up by Flutter in the element because the iFrame isn't in this window or higher</div><br;/>
     <button id="button1" onclick="sendMessageWindow()">Increment flutter in window</button>
-    <button id="button2" onclick="sendMessageWindowParent()">Increment flutter in parent</button>
+    <button id="button2" onclick="sendMessageWindowIFrame()">Increment flutter in iFrame</button>
 
     <script>
         // sends a message to the flutter app in the element
@@ -65,11 +65,12 @@
             // Which one should we call out
             window.postMessage(message, '*');
         }
-        function sendMessageWindowParent() {
+        function sendMessageWindowIFrame() {
             const message = '{"action":"increment"}';
+            var flutterIFrame = document.getElementById('FLUTTER-IFRAME');
             // Should target the domain instead of '*'
             // Which one should we call out
-            window.parent.postMessage(message, '*');
+            flutterIFrame.contentWindow.postMessage(message, '*');
         }
     </script>
     <hr>
