@@ -19,7 +19,7 @@ It simulates a dual site by running two web servers.
 One server is the _old site_ and the other is the _new flutter based web application or component_.
 
 ```mermaid
-graph TD
+graph TB;
   subgraph 4001[Static Site : 4001]
     subgraph staticIndex[index.html]
       iFrame("iFrame
@@ -32,6 +32,14 @@ graph TD
       elementFlutterDiv("element:
       FLUTTER_DIV_ELEMENT
       Replaced by Flutter index-embedded.html")
+
+      javascriptButton1("button:
+      target:window")
+      javascriptButton2("button:
+      target:parent")
+      javascriptMessagePost[["javascript:
+      onClick()
+      Message Send"]]
 
       messageReceive[["Javascript:
       widnowEventListener()
@@ -53,14 +61,22 @@ graph TD
         Replace FLUTTER_DIV_ELEMENT"]]
       end
       subgraph flutter[Flutter Web App]
+        flutterButtonPlus[["+ button"]]
         flutterPostMessage[["Post Message to Window"]]
         counter[[Increment counter]]
         displayWidget
+        onMessageFlutter[["html.window.onMessage.listen"]]
       end
   end
 
-  elementLoad-.loads.->flutterIndexLoadEmbedded
-  iFrame-.loads.->flutterIndexLoad
+  elementLoad-.loads.->flutterIndexEmbedded
+  iFrame-.loads.->flutterIndex
+
+  javascriptButton1 -."onClick()".-> javascriptMessagePost
+  javascriptButton2 -."onClick()".-> javascriptMessagePost
+  javascriptMessagePost -.postMessage( {action:increment}).->onMessageFlutter
+  onMessageFlutter--"increment()"-->counter
+  flutterButtonPlus--"increment()"-->counter
 
   flutterIndexLoadEmbedded-.loads and starts.->flutter
   flutterIndexLoad-.loads and starts.->flutter
@@ -68,7 +84,7 @@ graph TD
   counter-->flutterPostMessage
   counter--setState()-->displayWidget
 
-  flutterPostMessage--postMessage()-->messageReceive
+  flutterPostMessage-.postMessage( {action:incremented} ).->messageReceive
   messageReceive--appends-->elementMessage
 
 
@@ -103,9 +119,9 @@ This runs the same flutter app as an iframe and inside the element tree.
 The standard _Flutter_ created `index.html` works fine for standalone.
 Running in a div requires several changes to the Flutter template created `index.html`
 
-1. Add a query to find the element that is being replaced
-1. Change the way flutter is loaded in `window.addEventListener('load', function(ev)` and have it replace the element found above.
-1. Change the base href that tells Flutter how to access additional resources
+1. Adds a query to find the element that is being replaced
+1. Changes the way flutter is loaded in `window.addEventListener('load', function(ev)` and have it replace the element found above.
+1. Changes the base href that tells Flutter how to access additional resources
 
 `index-embedded.html` is used when embedding.  It was created by copying `index.html` instead of modifying `index.html`.
 This lets us run in either mode by selecting the appropriate html file and lets developers compare the two for differences.
@@ -119,19 +135,29 @@ The hard coded value in `index-embedded.html`.
   <base href="http://localhost:4002">
 ```
 
-## Demonstrate communication from Flutter to the hosting web page
+## Demonstrate communication from Flutter to the hosting HTML page
 
-This program demonstrates Flutter to Javascript communication. It notifies the wrapper via `postMessage()`. The example can be modified for ReactJS or other web frameworks.
+This program demonstrates Flutter to Javascript communication. Flutter notifies the wrapper HTML via the window's `postMessage()`. The example can be modified for ReactJS or other web frameworks.
 
-A message is sent from the counter to static HTML page hosting both the iFrame and the replaced element.  The embedding HTML page has a Javascript handler that logs received events to a text area in the main page and to the console.
+The flutter application posts messages to the window listener in static HTML page hosting both the iFrame and the replaced element. The message has an attribute `{"action":"incremented"}`.
 
-1. For the element replacement, the launch HTML is the same window the element is in.
+The embedding HTML page has a Javascript handler that logs received events to a text area in the main page and to the console. It filters out messages that don't contain `{"action":"incremented}`
+
+1. For the element replacement, the launching HTML is the same window the element is in.
    1. This shows up as a location of `http://localhost:4001` in the demo in the HTML and the javascript console. This is the static content's location.
 1. For the iFrame, the launch HTML is the **parent** window.
    1. This shows up as a location of `Instance of 'minified:a0p'` in the demo in the HTML and the javascript console.
 1. For the iFrame, a message is sent into the index.html wrapper that launches flutter.
    1. This shows up as a location of `http://localhost:4002` in the demo.  This is the address of the web server that holds the Flutter application.
    2. We don't see any received message because the Flutter boilerplate HTML has no handler and should stay that way in most places.
+
+## Demonstrates communication from the HTML page to a flutter application
+
+This program demonstrates Javascript to Flutter using window message channels. The web page JavaSCript notifies the Flutter application on the window's _message_ channel via a `postMessage()`. This example can be modified to use other frameworks to post the message.
+
+The Javascript posts messages to the window listener via the window and parent window.  The message has an attribute  `{"action":"increment"}`
+
+The Flutter application has an `onMessage()` handler that calls the internal `increment()` method if the `action` is `increment`.  It ignores all other messages that don't contain `{"action":"increment"}`;
 
 ## TODO
 

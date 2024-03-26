@@ -62,6 +62,8 @@ ContentSecurityPolicyOptions _cspOptions = ContentSecurityPolicyOptions(
     ],
     "script-src": [
       "'unsafe-eval'",
+      // required for javascript posting messages
+      "'unsafe-inline'",
       "localhost:4001",
       "localhost:4002",
       "www.gstatic.com",

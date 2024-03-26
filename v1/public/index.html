@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
-        // The loaded flutter application index.html looks for a query parameter "flutter_element_name"
+        // The loaded flutter application index.html is hard coded to an element named FLUTTER_DIV_ELEMENT
         // This gets a flutter.js error
         $(function () {
             $("#FLUTTER_DIV_ELEMENT").load("http://localhost:4002/index-embedded.html");
@@ -22,12 +22,18 @@
         //    and message destined for parent AND window is received here
         // Using createTextNode which does not accept HTML markup
         function handleMessage(e) {
-            console.log("Message Received" + e.data);
             var data = JSON.parse(e.data);
-            console.log("Count: " + data.count);
-            var theDiv = document.getElementById("MESSAGE_RESULTS_DIV");
-            var content = document.createTextNode(e.data);
-            theDiv.appendChild(content);
+            // Only interested in messages with an "action":"incremented".
+            // Ignore all the others
+            // should check origin also
+            if (data.action == "incremented"){
+                console.log("javascript Message Received from origin: "+ e.origin + " data: " + e.data);
+                var theDiv = document.getElementById("MESSAGE_RESULTS_DIV");
+                var content = document.createTextNode(e.data);
+                theDiv.appendChild(content);
+            } else {
+                // ignoring other messages
+            }
         }
     </script>
     <title>Embedding Application</title>
@@ -46,6 +52,26 @@
     <!-- Run this web app in this page via element replacement -->
     <h2>Flutter started from a script</h2>
     <div id="FLUTTER_DIV_ELEMENT" style=" width: 200px; height: 200px;"></div>
+    <hr/>
+    <div>Both buttons are picked up by Flutter in the element because the iFrame isn't in this window or higher</div><br;/>
+    <button id="button1" onclick="sendMessageWindow()">Increment flutter in window</button>
+    <button id="button2" onclick="sendMessageWindowParent()">Increment flutter in parent</button>
+
+    <script>
+        // sends a message to the flutter app in the element
+        function sendMessageWindow() {
+            const message = '{"action":"increment"}';
+            // Should target the domain instead of '*'
+            // Which one should we call out
+            window.postMessage(message, '*');
+        }
+        function sendMessageWindowParent() {
+            const message = '{"action":"increment"}';
+            // Should target the domain instead of '*'
+            // Which one should we call out
+            window.parent.postMessage(message, '*');
+        }
+    </script>
     <hr>
     <div id="MESSAGE_RESULTS_DIV"> </div>
 </body>

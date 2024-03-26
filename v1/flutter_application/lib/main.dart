@@ -60,6 +60,15 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  @override
+  void initState() {
+    // this object will listen for messages
+    html.window.onMessage.listen(
+      (html.MessageEvent event) => _listen(event),
+    );
+    super.initState();
+  }
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -70,6 +79,26 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
       _sendDidIncrementMessage(count: _counter);
     });
+  }
+
+  /// Called when a window message event is received
+  void _listen(html.MessageEvent event) {
+    final eventData = event.data;
+    // only increment if we receive the increment command
+    // should verify is string and ignore if not
+    // debugPrint('${eventData.runtimeType}');
+    final data = jsonDecode(eventData as String);
+    // Should check origin also
+    if (data['action'] == 'increment') {
+      debugPrint(
+          'flutter received from origin: ${event.origin} data: $eventData');
+      _incrementCounter();
+    } else {
+      // Receive all window messages for that window and domain
+      // Ignore the onces we aren't interested in
+    }
+    // _incrementCounter calls setState
+    //setState(() {});
   }
 
   @override
@@ -127,15 +156,15 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  /// Send the message if we knew where
+  /// Send the message to the browser - try and auto detect destinations
   void _sendDidIncrementMessage({required int count}) {
-    final Map<String, dynamic> data = {"count": count};
+    final Map<String, dynamic> data = {"action": "incremented", "count": count};
 
     // use html.window.parent if we are in an iframe
     if (html.window.parent != null) {
       data["location"] = html.window.parent!.location.toString();
       final json = const JsonEncoder().convert(data);
-      debugPrint('Message fired: $json to parent.');
+      debugPrint('flutter Message fired: $json to parent.');
       html.window.parent!.postMessage(json, "*");
     }
 
@@ -146,7 +175,8 @@ class _MyHomePageState extends State<MyHomePage> {
             html.window.location.toString()) {
       data["location"] = html.window.location.toString();
       final json = const JsonEncoder().convert(data);
-      debugPrint('Message fired: $json to window.');
+      debugPrint('flutter Message fired: $json to window.');
+      // should target a domain instead of global
       html.window.postMessage(json, "*");
     }
   }
