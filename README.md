@@ -159,6 +159,10 @@ The Javascript posts messages to the window listener via the window and parent w
 
 The Flutter application has an `onMessage()` handler that calls the internal `increment()` method if the `action` is `increment`.  It ignores all other messages that don't contain `{"action":"increment"}`;
 
+## Sample logs
+
+![Chrome UI with console logs](v1/images/2024-03-25_22-22-31.png)
+
 ## TODO
 
 * Demonstrate message channel communication from the web site to the Flutter Application
