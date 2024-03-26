@@ -34,33 +34,21 @@ graph TB
 The HTML loaded from the static site loads the Flutter applications creates linkages between the HTML page and those running flugger engines via in page JavaSCript
 
 ```mermaid
-graph LR;
+graph LR
   subgraph 4001[Static Site : 4001]
     subgraph staticIndex[index.html]
       iFrame("iFrame
       loads 4002:index.html")
 
       javascriptElementLoad[["Javascript:
-      onload() element FLUTTER_DIV_ELEMENT
+      onload() FLUTTER_DIV_ELEMENT
       loads 4002:index-embedded.html"]]
 
       htmlElementDiv("element:
       FLUTTER_DIV_ELEMENT
-      Replaced by Flutter index-embedded.html")
+      Replaced by Flutter
+      index-embedded.html")
 
-      javascriptButton1("button:
-      target:window")
-      javascriptButton2("button:
-      target:parent")
-      javascriptMessagePost[["javascript:
-      onClick()
-      Message Send"]]
-
-      javascriptWindowEventListener[["Javascript:
-      windowEventListener()
-      Message Receive"]]
-      htmlElementMessage("element:
-      MESSAGE_RESULTS_DIV")
     end
   end
 
@@ -68,19 +56,16 @@ graph LR;
       subgraph flutterIndex[index.html]
         flutterIndexLoad[["Javascript:
         load Flutter app
-        Replaces iFrame root"]]
+        iFrame"]]
       end
       subgraph flutterIndexEmbedded[index-embedded.html]
         flutterIndexLoadEmbedded[["Javascript:
         load Flutter app
-        Replace FLUTTER_DIV_ELEMENT"]]
+        FLUTTER_DIV_ELEMENT"]]
       end
       subgraph flutter[Flutter Web App]
         flutterButtonPlus[["+ button"]]
-        flutterPostMessage[["Post Message to Window"]]
-        flutterCounter[[Increment counter]]
         flutterDisplayWidget
-        flutterOnMessage[["html.window.onMessage.listen"]]
       end
   end
 
@@ -148,24 +133,6 @@ The embedding HTML page has a Javascript handler that logs received events to a 
 graph LR;
   subgraph 4001[Static Site : 4001]
     subgraph staticIndex[index.html]
-      iFrame("iFrame
-      loads 4002:index.html")
-
-      javascriptElementLoad[["Javascript:
-      onload() element FLUTTER_DIV_ELEMENT
-      loads 4002:index-embedded.html"]]
-
-      htmlElementDiv("element:
-      FLUTTER_DIV_ELEMENT
-      Replaced by Flutter index-embedded.html")
-
-      javascriptButton1("button:
-      target:window")
-      javascriptButton2("button:
-      target:parent")
-      javascriptMessagePost[["javascript:
-      onClick()
-      Message Send"]]
 
       javascriptWindowEventListener[["Javascript:
       windowEventListener()
@@ -176,30 +143,22 @@ graph LR;
   end
 
   subgraph 4002[Flutter Site : 4002 Flutter Web Package]
-      subgraph flutterIndex[index.html]
-        flutterIndexLoad[["Javascript:
-        load Flutter app
-        Replaces iFrame root"]]
-      end
-      subgraph flutterIndexEmbedded[index-embedded.html]
-        flutterIndexLoadEmbedded[["Javascript:
-        load Flutter app
-        Replace FLUTTER_DIV_ELEMENT"]]
-      end
       subgraph flutter[Flutter Web App]
         flutterButtonPlus[["+ button"]]
         flutterPostMessage[["Post Message to Window"]]
         flutterCounter[[Increment counter]]
         flutterDisplayWidget
-        flutterOnMessage[["html.window.onMessage.listen"]]
+        flutterOnMessage[["html.window
+        .onMessage.listen"]]
       end
   end
 
-  flutterButtonPlus-.onPressed().->flutterCounter
+  flutterButtonPlus-- onPressed() -->flutterCounter
   flutterCounter-->flutterPostMessage
   flutterCounter--setState()-->flutterDisplayWidget
 
-  flutterPostMessage-.postMessage( {action:incremented} ).->javascriptWindowEventListener
+  flutterPostMessage-.postMessage()
+    {action:incremented}.->javascriptWindowEventListener
   javascriptWindowEventListener--appends-->htmlElementMessage
 
 
@@ -228,16 +187,6 @@ The Flutter application has an `onMessage()` handler that calls the internal `in
 graph LR;
   subgraph 4001[Static Site : 4001]
     subgraph staticIndex[index.html]
-      iFrame("iFrame
-      loads 4002:index.html")
-
-      javascriptElementLoad[["Javascript:
-      onload() element FLUTTER_DIV_ELEMENT
-      loads 4002:index-embedded.html"]]
-
-      htmlElementDiv("element:
-      FLUTTER_DIV_ELEMENT
-      Replaced by Flutter index-embedded.html")
 
       javascriptButton1("button:
       target:window")
@@ -250,41 +199,31 @@ graph LR;
       javascriptWindowEventListener[["Javascript:
       windowEventListener()
       Message Receive"]]
-      htmlElementMessage("element:
-      MESSAGE_RESULTS_DIV")
     end
   end
 
   subgraph 4002[Flutter Site : 4002 Flutter Web Package]
       subgraph flutter[Flutter Web App]
-        flutterButtonPlus[["+ button"]]
         flutterPostMessage[["Post Message to Window"]]
         flutterCounter[[Increment counter]]
         flutterDisplayWidget
-        flutterOnMessage[["html.window.onMessage.listen"]]
-      end
-     subgraph flutterIndex[index.html]
-        flutterIndexLoad[["Javascript:
-        load Flutter app
-        Replaces iFrame root"]]
-      end
-      subgraph flutterIndexEmbedded[index-embedded.html]
-        flutterIndexLoadEmbedded[["Javascript:
-        load Flutter app
-        Replace FLUTTER_DIV_ELEMENT"]]
+        flutterOnMessage[["html.window
+        .onMessage.listen"]]
       end
    end
 
 
-  javascriptButton1 -."onClick()".-> javascriptMessagePost
-  javascriptButton2 -."onClick()".-> javascriptMessagePost
-  javascriptMessagePost -.postMessage( {action:increment}).->flutterOnMessage
-  flutterOnMessage--"increment()"-->flutterCounter
+  javascriptButton1 -.-> |"onClick()"| javascriptMessagePost
+  javascriptButton2 -.->|"onClick()"| javascriptMessagePost
+  javascriptMessagePost -.->|"postMessage()
+    {action:increment}"| flutterOnMessage
 
+  flutterOnMessage-->|"increment()"| flutterCounter
   flutterCounter-->flutterPostMessage
-  flutterCounter--setState()-->flutterDisplayWidget
+  flutterCounter-->|"setState()"| flutterDisplayWidget
 
-  flutterPostMessage-.postMessage( {action:incremented} ).->javascriptWindowEventListener
+  flutterPostMessage-->|"postMessage()
+    {action:incremented}"| javascriptWindowEventListener
 
 
   classDef orange fill:#c63,stroke:#333,stroke-width:2px;
