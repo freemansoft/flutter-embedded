@@ -2,8 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import "package:universal_html/html.dart" as html;
+import 'package:package_info_plus/package_info_plus.dart';
 
-void main() {
+void main() async {
+  // Be sure to add this line if `PackageInfo.fromPlatform()` is called before runApp()
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const MyApp());
 }
 
@@ -61,12 +65,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   @override
-  void initState() {
+  Future<void> initState() async {
     // this object will listen for messages
     html.window.onMessage.listen(
       (html.MessageEvent event) => _listen(event),
     );
     super.initState();
+    _postPackageInfo();
   }
 
   void _incrementCounter() {
@@ -77,7 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
-      _sendDidIncrementMessage(count: _counter);
+      _postActionMessage(
+          action: "incremented", actionPayload: {"count": _counter});
     });
   }
 
@@ -157,27 +163,44 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// Send the message to the browser - try and auto detect destinations
-  void _sendDidIncrementMessage({required int count}) {
-    final Map<String, dynamic> data = {"action": "incremented", "count": count};
+}
 
-    // use html.window.parent if we are in an iframe
-    if (html.window.parent != null) {
-      data["location"] = html.window.parent!.location.toString();
-      final json = const JsonEncoder().convert(data);
-      debugPrint('flutter Message fired: $json to parent.');
-      html.window.parent!.postMessage(json, "*");
-    }
+// Flutter isolates can't run plugins so this can't go in main()
+// This is called from build
+// This code will get executed after build() because
+// the scheduler won't pick up delayed items until then.
+Future<void> _postPackageInfo() async {
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  _postActionMessage(action: "started", actionPayload: {
+    'appName': packageInfo.appName,
+    'packageName': packageInfo.packageName,
+    'version': packageInfo.version,
+    'buidlNumber': packageInfo.buildNumber
+  });
+}
 
-    // if there is no parent or the parent and window are different
-    // This will be true if in iframe but no one will receive it
-    if (html.window.parent == null ||
-        html.window.parent!.location.toString() !=
-            html.window.location.toString()) {
-      data["location"] = html.window.location.toString();
-      final json = const JsonEncoder().convert(data);
-      debugPrint('flutter Message fired: $json to window.');
-      // should target a domain instead of global
-      html.window.postMessage(json, "*");
-    }
+void _postActionMessage(
+    {required String action, required Map<String, dynamic> actionPayload}) {
+  Map<String, dynamic> data = {"action": action};
+  data.addAll(actionPayload);
+
+  // use html.window.parent if we are in an iframe
+  if (html.window.parent != null) {
+    data["location"] = html.window.parent!.location.toString();
+    final json = const JsonEncoder().convert(data);
+    debugPrint('flutter Message fired: $json to parent.');
+    html.window.parent!.postMessage(json, "*");
+  }
+
+  // if there is no parent or the parent and window are different
+  // This will be true if in iframe but no one will receive it
+  if (html.window.parent == null ||
+      html.window.parent!.location.toString() !=
+          html.window.location.toString()) {
+    data["location"] = html.window.location.toString();
+    final json = const JsonEncoder().convert(data);
+    debugPrint('flutter Message fired: $json to window.');
+    // should target a domain instead of global
+    html.window.postMessage(json, "*");
   }
 }

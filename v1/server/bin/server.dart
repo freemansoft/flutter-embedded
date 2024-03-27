@@ -5,7 +5,6 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_router/shelf_router.dart';
 import 'package:shelf_static/shelf_static.dart';
-import 'package:shelf_cors_headers/shelf_cors_headers.dart';
 import 'package:shelf_helmet/shelf_helmet.dart';
 
 // programatic handler from the template
@@ -19,18 +18,11 @@ Response _echoHandler(Request request) {
   return Response.ok('$message\n');
 }
 
-const Map<String, String> _corsHeader = {
-  ACCESS_CONTROL_ALLOW_ORIGIN: '*',
+const Map<String, dynamic> _corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': '*',
 };
-
-final _originListChecker = originOneOf(
-  [
-    'http://localhost:4001',
-    'http://localhost:4002',
-    'http://127.0.0.1:4001',
-    'http://127.0.0.1:4002'
-  ],
-);
 
 ContentSecurityPolicyOptions _cspOptions = ContentSecurityPolicyOptions(
   useDefaults: false,
@@ -139,18 +131,32 @@ void main(List<String> args) async {
 
   // Configure a pipeline that handles requests.
   final handler = Pipeline()
-      // someone addingX-Frame-Options probably because the return type is html
       .addMiddleware(logRequests())
-      .addMiddleware(
-          xPermittedCrossDomainPolicies(permittedPolicy: PermittedPolicies.all))
-      .addMiddleware(
-          corsHeaders(headers: _corsHeader, originChecker: _originListChecker))
-      .addMiddleware(xXssProtection())
+      .addMiddleware(_addCorsHeaders())
       .addMiddleware(contentSecurityPolicy(options: _cspOptions))
+      .addMiddleware(referrerPolicy(policies: [
+        //ReferrerPolicyToken.noReferrer,
+        ReferrerPolicyToken.sameOrigin,
+        ReferrerPolicyToken.originWhenCrossOrigin,
+        ReferrerPolicyToken.origin,
+      ]))
+      .addMiddleware(_removeXFrameOptionsHeader())
       .addHandler(router.call);
 
   // For running in containers, we respect the PORT environment variable.
   final server = await shelf_io.serve(handler, ip, port,
       poweredByHeader: "Powered by Joe");
   print('Server listening on port ${server.port} docroot: $docroot');
+}
+
+Middleware _removeXFrameOptionsHeader() {
+  return createMiddleware(responseHandler: (response) {
+    return response.change(headers: {'X-Frame-Options': 'dogfood'});
+  });
+}
+
+Middleware _addCorsHeaders() {
+  return createMiddleware(responseHandler: (response) {
+    return response.change(headers: _corsHeaders);
+  });
 }
