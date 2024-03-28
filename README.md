@@ -22,7 +22,7 @@ One server is the _old site_ and the other is the _new flutter based web applica
 graph TB
   Browser
   StaticSite[Static Site 4001]
-  FlutterApp[Flutter App on 4001]
+  FlutterApp[Flutter App on 4002]
 
   Browser--loads html from-->StaticSite
   Browser-.displays in iFrame.->FlutterApp

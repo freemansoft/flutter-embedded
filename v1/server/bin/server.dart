@@ -140,21 +140,18 @@ void main(List<String> args) async {
         ReferrerPolicyToken.originWhenCrossOrigin,
         ReferrerPolicyToken.origin,
       ]))
-      .addMiddleware(_removeXFrameOptionsHeader())
       .addHandler(router.call);
 
   // For running in containers, we respect the PORT environment variable.
   final server = await shelf_io.serve(handler, ip, port,
       poweredByHeader: "Powered by Joe");
+  // https://github.com/dart-lang/shelf/issues/320
+  server.defaultResponseHeaders.removeAll('x-frame-options');
   print('Server listening on port ${server.port} docroot: $docroot');
 }
 
-Middleware _removeXFrameOptionsHeader() {
-  return createMiddleware(responseHandler: (response) {
-    return response.change(headers: {'X-Frame-Options': 'dogfood'});
-  });
-}
-
+// This should change the value based on the origin header
+// That requires a requestHandler and I'm not up to writing that now
 Middleware _addCorsHeaders() {
   return createMiddleware(responseHandler: (response) {
     return response.change(headers: _corsHeaders);
