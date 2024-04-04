@@ -21,4 +21,8 @@ The V1 application can be run as an android engine.
 
 ## TODO
 
-* Run two copies of the flutter module with a swipe operation or a scroll area or something.  See  <https://github.com/flutter/samples/tree/main/add_to_app/multiple_flutters>
+* Diagrams
+* Add an android button that can send a message into flutter like demonstrated in the web app.
+* Run two copies of the flutter module with a swipe operation or a scroll area or something.
+  * See  <https://github.com/flutter/samples/tree/main/add_to_app/multiple_flutters>
+  * See <https://github.com/flutter/samples/blob/main/add_to_app/multiple_flutters/multiple_flutters_android/app/src/main/java/dev/flutter/multipleflutters/DoubleFlutterActivity.kt>
