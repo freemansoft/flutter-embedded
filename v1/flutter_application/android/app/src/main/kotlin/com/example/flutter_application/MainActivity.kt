@@ -19,7 +19,7 @@ class MainActivity : FlutterActivity() {
         var channel = BasicMessageChannel(flutterEngine.dartExecutor, actionChannel, JSONMessageCodec.INSTANCE);
         channel.setMessageHandler{ message,reply ->
             Log.d("TAG", "received message: "+message);
-            Toast.makeText(this, "Received message from Flutter: $message", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Received message from Flutter: $message", Toast.LENGTH_SHORT).show();
             reply.reply("Message received");
         };
 
