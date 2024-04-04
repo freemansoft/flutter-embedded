@@ -1,4 +1,6 @@
-# Demonstrating flutter app embedding in an iFrame or via element replacement
+# Flutter Web inside a web app
+
+## Demonstrating flutter app embedding in an iFrame or via element replacement
 
 Sometimes you want to do an incremental migration from your existing web application to flutter flow by flow.
 Other times you are adding some flutter capability to an existing web application.
@@ -9,10 +11,10 @@ The simplest to most complex topologies probably are
 
 1. Run a single site containing both apps.
 2. Run two sites with the new site proxied through the original site.
-3. Run dual site where the original site refers to or loads the new flutter site in iFrames .
+3. Run dual site where the original site refers to or loads the new flutter site in iFrames.
 4. Run dual site where the original site refers to or loads the new flutter site in an element.
 
-## V1
+## V1 Web App
 
 V1 implements #3 and #4.
 It simulates a dual site by running two web servers.

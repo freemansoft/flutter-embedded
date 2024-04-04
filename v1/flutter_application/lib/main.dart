@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import "package:universal_html/html.dart" as html;
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -65,11 +67,16 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   @override
-  Future<void> initState() async {
+  void initState() {
     // this object will listen for messages
-    html.window.onMessage.listen(
-      (html.MessageEvent event) => _listen(event),
-    );
+    if (kIsWeb) {
+      html.window.onMessage.listen(
+        (html.MessageEvent event) => _listen(event),
+      );
+    } else {
+      debugPrint('Flutter app not listening for mobile events :-(');
+      //TODDO listen for mobile
+    }
     super.initState();
     _postPackageInfo();
   }
@@ -181,6 +188,15 @@ Future<void> _postPackageInfo() async {
 
 void _postActionMessage(
     {required String action, required Map<String, dynamic> actionPayload}) {
+  if (kIsWeb) {
+    _postActionMessageWeb(action: action, actionPayload: actionPayload);
+  } else {
+    _postActionMessageNative(action: action, actionPayload: actionPayload);
+  }
+}
+
+void _postActionMessageWeb(
+    {required String action, required Map<String, dynamic> actionPayload}) {
   Map<String, dynamic> data = {"action": action};
   data.addAll(actionPayload);
 
@@ -203,4 +219,16 @@ void _postActionMessage(
     // should target a domain instead of global
     html.window.postMessage(json, "*");
   }
+}
+
+void _postActionMessageNative(
+    {required String action, required Map<String, dynamic> actionPayload}) {
+  Map<String, dynamic> data = {"action": action};
+  data.addAll(actionPayload);
+  final json = const JsonEncoder().convert(data);
+
+  const BasicMessageChannel messageChannel = BasicMessageChannel(
+      'com.freemansoft.eventchannel/action', JSONMessageCodec());
+  // fire and forget
+  messageChannel.send(json);
 }
