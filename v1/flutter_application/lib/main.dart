@@ -63,6 +63,9 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+/// Message channel used in native app
+const String actionChannel = 'com.freemansoft.eventchannel/action';
+
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
@@ -74,8 +77,11 @@ class _MyHomePageState extends State<MyHomePage> {
         (html.MessageEvent event) => _listen(event),
       );
     } else {
-      debugPrint('Flutter app not listening for mobile events :-(');
-      //TODDO listen for mobile
+      const BasicMessageChannel messageChannel =
+          BasicMessageChannel(actionChannel, JSONMessageCodec());
+      messageChannel.setMessageHandler(
+        (dynamic message) => _listenNative(message),
+      );
     }
     super.initState();
     _postPackageInfo();
@@ -104,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // Should check origin also
     if (data['action'] == 'increment') {
       debugPrint(
-          'flutter received from origin: ${event.origin} data: $eventData');
+          'Flutter received from origin: ${event.origin} data: $eventData');
       _incrementCounter();
     } else {
       // Receive all window messages for that window and domain
@@ -112,6 +118,17 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     // _incrementCounter calls setState
     //setState(() {});
+  }
+
+  Future<void> _listenNative(dynamic message) async {
+    final data = jsonDecode(message as String);
+    if (data['action'] == 'increment') {
+      debugPrint('Flutter received $data');
+      _incrementCounter();
+    } else {
+      // Receive all window messages for that window and domain
+      // Ignore the onces we aren't interested in
+    }
   }
 
   @override
@@ -195,6 +212,7 @@ void _postActionMessage(
   }
 }
 
+/// @param actionPayload can be antything.  we use it for package info
 void _postActionMessageWeb(
     {required String action, required Map<String, dynamic> actionPayload}) {
   Map<String, dynamic> data = {"action": action};
@@ -221,14 +239,15 @@ void _postActionMessageWeb(
   }
 }
 
+/// @param actionPayload can be antything.  we use it for package info
 void _postActionMessageNative(
     {required String action, required Map<String, dynamic> actionPayload}) {
-  Map<String, dynamic> data = {"action": action};
+  Map<String, dynamic> data = {"action": action, "source": "Flutter"};
   data.addAll(actionPayload);
   final json = const JsonEncoder().convert(data);
 
-  const BasicMessageChannel messageChannel = BasicMessageChannel(
-      'com.freemansoft.eventchannel/action', JSONMessageCodec());
+  const BasicMessageChannel messageChannel =
+      BasicMessageChannel(actionChannel, JSONMessageCodec());
   // fire and forget
   messageChannel.send(json);
 }
