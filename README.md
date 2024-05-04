@@ -241,5 +241,4 @@ graph TB;
 
 ## TODO
 
-* Demonstrate message channel communication from the web site to the Flutter Application
 * Look at ways of eliminating 'unsafe-inline' and 'unsafe-eval' in ContentSecurityPolicyOptions in `server.dart`.  Left in for now to simplify.
