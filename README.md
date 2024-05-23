@@ -237,7 +237,7 @@ graph TB;
 
 ## Sample logs
 
-![Chrome UI with console logs](v1/images/2024-03-25_22-22-31.png)
+![Chrome UI with console logs](images/2024-03-25_22-22-31.png)
 
 ## TODO
 

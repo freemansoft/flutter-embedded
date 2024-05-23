@@ -48,7 +48,7 @@ graph TB;
 5. Flutter sends an `incremented` message every time it increments
    1. You can see this in the logs and in the `Toast` popup.  Look for `received message:`
 
-![Touch sensitive area in android app](v1/images/2024-05-04_18-50-27.png)
+![Touch sensitive area in android app](images/2024-05-04_18-50-27.png)
 
 ## Running the Android app
 
@@ -56,7 +56,7 @@ graph TB;
 2. (optional) Run the Android studio and open `logcat` to see the android logs
    1. It looks like the andoid debug logs are also visible in the Visual Studio Code debug console
 3. Start the application in VSCode by highlighting the `main.dart` and then pressing right mouse to expose the `start debubgging` menu item.
-   1. Other ways exist
+   1. You can also use the `VSCode` run menu.  Select `Flutter` and press the run icon.
 4. This should launch the application in the android emulator
 
 ## TODO
