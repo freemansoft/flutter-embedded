@@ -31,6 +31,13 @@
         "--docroot",
         "../flutter_application/build/web"
       ]
+    },
+    {
+      "name": "Flutter V1 (lib/main.dart)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "v1/flutter_application",
+      "program": "lib/main.dart"
     }
   ]
 }

@@ -52,7 +52,9 @@ graph TB;
 
 ## Running the Android app
 
-1. Start the android emulator from VS Code
+1. Start the android emulator from VS Code. You can do this by
+   1. Clicking on the device in the VSCode status bar.
+   2. `Control-shift-P` then `Flutter`  then `Launch Emulator`
 2. (optional) Run the Android studio and open `logcat` to see the android logs
    1. It looks like the andoid debug logs are also visible in the Visual Studio Code debug console
 3. Start the application in VSCode by highlighting the `main.dart` and then pressing right mouse to expose the `start debubgging` menu item.
