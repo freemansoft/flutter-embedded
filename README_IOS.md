@@ -8,6 +8,12 @@ This currently supports unidirectional messaging.
 2. The Flutter code posts a message to the `BasicMessageChannel` every time the increment butotn is pressed.
 3. The iOS code logs received messages via `print()`.  They show up in the XCode log pane.
 
+## Installation Instructions
+
+1. Install XCode
+2. Add the appropriate devices configurations to the XCode simulator
+3. You may need to install pods
+
 ## Runnning the iOS Simulator
 
 1. Verify you have the target simulator loaded. This is done with XCode. You can find instructions at [adding additional simulators](https://developer.apple.com/documentation/safari-developer-tools/adding-additional-simulators)
