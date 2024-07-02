@@ -41,4 +41,3 @@ This is the _shortest path_ with as little code as possible.
 
 1. Flutter fills up the entire screen for the iOS and Android applications.  There are no native controls to generate the increment messages
 2. This uses a classic single channel specifying the action in a field in the JSON.  Native applications typically do one message per channel and have one channel for each message type
-
