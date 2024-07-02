@@ -2,11 +2,21 @@
 
 ## What the app does
 
-This currently supports unidirectional messaging.
+This currently supports bidirectional messaging.
+
+### From Flutter to iOS
 
 1. The Flutter code posts a message to the `BasicMessageChannel` on startup
 2. The Flutter code posts a message to the `BasicMessageChannel` every time the increment butotn is pressed.
-3. The iOS code logs received messages via `print()`.  They show up in the XCode log pane.
+3. The iOS code listens on a `FlutterBasicMessageChannel`
+4. The iOS code logs received messages via `print()`.  They show up in the XCode log pane.
+
+### From iOS to Flutter
+
+1. **Shake** the device using `Device -> Shake`
+2. The iOS code posts an `{action:increment}` message to the `FlutterBasicMessageChannel`
+3. The Flutter code listens for the `{action:incremnt}` message and increments the counter.
+4. The flutter code logs the received message.
 
 ## Installation Instructions
 
@@ -24,6 +34,5 @@ This currently supports unidirectional messaging.
 
 ## To Be Implemented
 
-1. Clicking in the ios application and sending that click as an increment command to Flutter.
-2. In iOS, converting the received JSON string to a JSON object.
-3. Diagrams similar to those for Android
+1. In iOS, converting the received JSON string to a JSON object.
+2. Diagrams similar to those for the Android version
