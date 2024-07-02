@@ -2,24 +2,24 @@
 
 Goal: Demonstrate Communication between Android Application and embedded Flutter application
 
-The V1 application can be run as an Android engine.
+The V1 application can be run as an Android application.
 
 ```mermaid
 graph TB;
 
    subgraph Android MainActivity
-   OnTouchEvent["onTouchEvent"]
-   AndroidPostMessage[["postEvent<br/;>BasicMessageChannel"]]
-   AndroidMessageHandler[["messageHandler<br/;>BasicMessageChannel"]]
+      OnTouchEvent["onTouchEvent"]
+      AndroidPostMessage[["postEvent<br/;>BasicMessageChannel"]]
+      AndroidMessageHandler[["messageHandler<br/;>BasicMessageChannel"]]
 
    end
 
    subgraph Flutter main
-   FloatingActionButton["FloatingActionButton"]
-   OnPressHandler
-   FlutterPostActionMessage[["postEvent<br/;>BasicMessageChannel"]]
-   FlutterMessageListener[["messageListener<br/;>BasicMessageChannel"]]
-   Counter
+      FloatingActionButton["FloatingActionButton"]
+      OnPressHandler
+      FlutterPostActionMessage[["postEvent<br/;>BasicMessageChannel"]]
+      FlutterMessageListener[["messageListener<br/;>BasicMessageChannel"]]
+      Counter
 
    end
 
@@ -37,6 +37,8 @@ graph TB;
 
 ## What the app does
 
+This currently supports bidirectional messaging whenever the counter is incremented in the Flutter module or an event is generated in the Android program.
+
 1. Runs a single counter Flutter application embedded in an android app
 2. The Flutter application sends the `initialized` message on startup via the `BasicMessageChannel`.
    1. You can see this in the logs and in the `Toast` popup.
@@ -47,6 +49,8 @@ graph TB;
    2. The `Flutter` application listens for `increment` messages on the `BasicMessageChannel` which invokes the Flutter `increment` function.
 5. Flutter sends an `incremented` message every time it increments
    1. You can see this in the logs and in the `Toast` popup.  Look for `received message:`
+
+We use the touch area outside the drawing area so that we didn't have to fragment the screen to display any Android controls.
 
 ![Touch sensitive area in android app](images/2024-05-04_18-50-27.png)
 
@@ -61,9 +65,8 @@ graph TB;
    1. You can also use the `VSCode` run menu.  Select `Flutter` and press the run icon.
 4. This should launch the application in the android emulator
 
-## TODO
+## To Do
 
-* Diagrams for the Android application
 * Convert the application use Fragments and put the Flutter engine in a fragment. Add an android button that can send a message into flutter like demonstrated in the web app.
   * Currently uses no Fragments and dectects press actions outside the Flutter application
   * Fragments not implemented because the Flutter android template doesn't create them so I left this code like people would see it in a new Flutter project.
@@ -76,11 +79,11 @@ graph TB;
 
 The V1 version implements native communication via the `basic message channel` implemented with `BasicMessageChannel`
 
-| Type                  | Description                                           | Flutter to Native | Native to Flutter | Supports Return  |
-| --------------------- | ----------------------------------------------------- | ----------------- | ----------------- | ---------------- |
-| `MethodChannel`       | Invoke method on the other side                       | Yes               | Yes               | Yes via `result` |
-| `EventChannel`        | Creates a stream. Updates can flow in both directions | No                | Yes               | Bidirectional    |
-| `BasicMessageChannel` | Encode and decode using a codec.  No parameters       | Yes               | Yes               | Yes via `reply`  |
+| Type                                                                                                     | Description                                           | Flutter to Native | Native to Flutter | Supports Return  |
+| -------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------------- | ----------------- | ---------------- |
+| [MethodChannel](https://api.flutter.dev/javadoc/io/flutter/plugin/common/MethodChannel.html)             | Invoke method on the other side                       | Yes               | Yes               | Yes via `result` |
+| [EventChannel](https://api.flutter.dev/javadoc/io/flutter/plugin/common/EventChannel.html)               | Creates a stream. Updates can flow in both directions | No                | Yes               | Bidirectional    |
+| [BasicMessageChannel](https://api.flutter.dev/javadoc/io/flutter/plugin/common/BasicMessageChannel.html) | Encode and decode using a codec.  No parameters       | Yes               | Yes               | Yes via `reply`  |
 
 References
 
@@ -89,14 +92,32 @@ References
 
 ### MethodChannel
 
+Invokes a method on the opposite side.  Uses the codecs show below.
+
+#### MethodChannel Codecs
+
+| Android Codec                                                                                            | Flutter Codec                                                                                  |
+| -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| [StandardMethodCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/StandardMethodCodec.html) | [StandardMEthodCodec](https://api.flutter.dev/flutter/services/StandardMethodCodec-class.html) |
+| [JSONMethodCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/JSONMethodCodec.html)         | [JSONMethodCodec](https://api.flutter.dev/flutter/services/JSONMethodCodec-class.html)         |
+
+### EventChannel
+
 ipse lorum
 
-### Event Channel
+#### EventChannel Codecs
 
 ipse lorum
 
-### Basic Message  Channel
+### BasicMessageChannel
 
-Supports a single payload using codecs like the JSON codec
+Supports a single payload with an optional return value.  Uses codecs like the JSON codec
 
-ipse lorum
+#### Message Channel Codecs
+
+| Android Codec                                                                                              | Flutter Codec                                                                                    |
+| ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| [StandardMessageCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/StandardMessageCodec.html) | [StandardMessageCodec](https://api.flutter.dev/flutter/services/StandardMessageCodec-class.html) |
+| [BinaryCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/BinaryCodec.html)                   | [BinaryCodec](https://api.flutter.dev/flutter/services/BinaryCodec-class.html)                   |
+| [JSONMessageCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/JSONMessageCodec.html)         | [JsonMessageCodec](https://api.flutter.dev/flutter/services/JSONMessageCodec-class.html)         |
+| [StringCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/StringCodec.html)                   | [StringCodec](https://api.flutter.dev/flutter/services/StringCodec-class.html)                   |
