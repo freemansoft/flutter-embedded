@@ -27,22 +27,25 @@ graph TD;
 
 ```
 
-## Android IOS and Web
+## Flutter Channel types
 
-| Documentation for the flutter embedded repository                                               |
-| ----------------------------------------------------------------------------------------------- |
-| [Web application with message communication between Flutter and Web](README_WEB.md)             |
-| [Android application with message communication between Flutter and Android](README_ANDROID.md) |
-| [iOS application with message communication between Flutter and Android](README_IOS.md)         |
+There are three native platform channel types.  V1 of this application uses the `Message Channel`
 
-## Channel types
-
-| Flutter class                                                                                  | Description                                           | Flutter to Native | Native to Flutter | Supports Return  |
+| Channel type and Flutter class                                                                 | Description                                           | Flutter to Native | Native to Flutter | Supports Return  |
 | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------------- | ----------------- | ---------------- |
 | [MethodChannel](https://api.flutter.dev/flutter/services/MethodChannel-class.html)             | Invoke method on the other side                       | Yes               | Yes               | Yes via `result` |
 | [EventChannel](https://api.flutter.dev/flutter/services/EventChannel-class.html)               | Creates a stream. Updates can flow in both directions | No                | Yes               | Bidirectional    |
 | [BasicMessageChannel](https://api.flutter.dev/flutter/services/BasicMessageChannel-class.html) | Encode and decode using a codec.  No parameters       | Yes               | Yes               | Yes via `reply`  |
 
+## Documentation on platform specific implementations
+
+Additional details are available for each platform implementation
+
+| Platform                                                                                        |
+| ----------------------------------------------------------------------------------------------- |
+| [Web application with message communication between Flutter and Web](README_WEB.md)             |
+| [Android application with message communication between Flutter and Android](README_ANDROID.md) |
+| [iOS application with message communication between Flutter and Android](README_IOS.md)         |
 
 ## V1
 
