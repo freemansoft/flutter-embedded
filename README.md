@@ -29,11 +29,11 @@ graph TD;
 
 ## Android IOS and Web
 
-| Documentation                                                                                                        |
-| -------------------------------------------------------------------------------------------------------------------- |
-| [Flutter embedded win web application with message communication between Flutter and Web](README_WEB.md)             |
-| [Flutter embedded win Android application with message communication between Flutter and Android](README_ANDROID.md) |
-| [Flutter embedded win iOS application with message communication between Flutter and Android](README_IOS.md)         |
+| Documentation for the flutter embedded repository                                               |
+| ----------------------------------------------------------------------------------------------- |
+| [Web application with message communication between Flutter and Web](README_WEB.md)             |
+| [Android application with message communication between Flutter and Android](README_ANDROID.md) |
+| [iOS application with message communication between Flutter and Android](README_IOS.md)         |
 
 ## V1
 
