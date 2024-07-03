@@ -35,6 +35,15 @@ graph TD;
 | [Android application with message communication between Flutter and Android](README_ANDROID.md) |
 | [iOS application with message communication between Flutter and Android](README_IOS.md)         |
 
+## Channel types
+
+| Flutter class                                                                                  | Description                                           | Flutter to Native | Native to Flutter | Supports Return  |
+| ---------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------------- | ----------------- | ---------------- |
+| [MethodChannel](https://api.flutter.dev/flutter/services/MethodChannel-class.html)             | Invoke method on the other side                       | Yes               | Yes               | Yes via `result` |
+| [EventChannel](https://api.flutter.dev/flutter/services/EventChannel-class.html)               | Creates a stream. Updates can flow in both directions | No                | Yes               | Bidirectional    |
+| [BasicMessageChannel](https://api.flutter.dev/flutter/services/BasicMessageChannel-class.html) | Encode and decode using a codec.  No parameters       | Yes               | Yes               | Yes via `reply`  |
+
+
 ## V1
 
 This is the _shortest path_ with as little code as possible.
