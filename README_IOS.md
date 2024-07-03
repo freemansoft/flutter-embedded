@@ -82,11 +82,11 @@ The iOS application listens for _shake_ events so that we could use the standard
 
 The V1 version implements native communication via the `basic message channel` implemented on the iOS side with `FlutterBasicMessageChannel`
 
-| Type                                                                                                            | Description                                           | Flutter to Native | Native to Flutter | Supports Return  |
-| --------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------------- | ----------------- | ---------------- |
-| [FlutterMethodChanel](https://api.flutter.dev/ios-embedder/interface_flutter_method_channel.html)               | Invoke method on the other side                       | Yes               | Yes               | Yes via `result` |
-| [FlutterEventChannel](https://api.flutter.dev/ios-embedder/interface_flutter_event_channel.html)                | Creates a stream. Updates can flow in both directions | No                | Yes               | Bidirectional    |
-| [FlutterBasicMessageChannel](https://api.flutter.dev/ios-embedder/interface_flutter_basic_message_channel.html) | Encode and decode using a codec.  No parameters       | Yes               | Yes               | Yes via `reply`  |
+| iOS Class                                                                                                       | Flutter class                                                                                  | Description                                           | Flutter to Native | Native to Flutter | Supports Return  |
+| --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------------- | ----------------- |
+| [FlutterMethodChanel](https://api.flutter.dev/ios-embedder/interface_flutter_method_channel.html)               | [MethodChannel](https://api.flutter.dev/flutter/services/MethodChannel-class.html)             | Invoke method on the other side                       | Yes               | Yes               | Yes via `result` |
+| [FlutterEventChannel](https://api.flutter.dev/ios-embedder/interface_flutter_event_channel.html)                | [EventChannel](https://api.flutter.dev/flutter/services/EventChannel-class.html)               | Creates a stream. Updates can flow in both directions | No                | Yes               | Bidirectional    |
+| [FlutterBasicMessageChannel](https://api.flutter.dev/ios-embedder/interface_flutter_basic_message_channel.html) | [BasicMessageChannel](https://api.flutter.dev/flutter/services/BasicMessageChannel-class.html) | Encode and decode using a codec.  No parameters       | Yes               | Yes               | Yes via `reply`  |
 
 ### FlutterMethodChannel
 

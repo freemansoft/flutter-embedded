@@ -79,11 +79,11 @@ We use the touch area outside the drawing area so that we didn't have to fragmen
 
 The V1 version implements native communication via the `basic message channel` implemented with `BasicMessageChannel`
 
-| Type                                                                                                     | Description                                           | Flutter to Native | Native to Flutter | Supports Return  |
-| -------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------------- | ----------------- | ---------------- |
-| [MethodChannel](https://api.flutter.dev/javadoc/io/flutter/plugin/common/MethodChannel.html)             | Invoke method on the other side                       | Yes               | Yes               | Yes via `result` |
-| [EventChannel](https://api.flutter.dev/javadoc/io/flutter/plugin/common/EventChannel.html)               | Creates a stream. Updates can flow in both directions | No                | Yes               | Bidirectional    |
-| [BasicMessageChannel](https://api.flutter.dev/javadoc/io/flutter/plugin/common/BasicMessageChannel.html) | Encode and decode using a codec.  No parameters       | Yes               | Yes               | Yes via `reply`  |
+| Android Class                                                                                            | Flutter Class                                                                                  | Description                                           | Flutter to Native | Native to Flutter | Supports Return  |
+| -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------------- | ----------------- | ---------------- |
+| [MethodChannel](https://api.flutter.dev/javadoc/io/flutter/plugin/common/MethodChannel.html)             | [MethodChannel](https://api.flutter.dev/flutter/services/MethodChannel-class.html)             | Invoke method on the other side                       | Yes               | Yes               | Yes via `result` |
+| [EventChannel](https://api.flutter.dev/javadoc/io/flutter/plugin/common/EventChannel.html)               | [EventChannel](https://api.flutter.dev/flutter/services/EventChannel-class.html)               | Creates a stream. Updates can flow in both directions | No                | Yes               | Bidirectional    |
+| [BasicMessageChannel](https://api.flutter.dev/javadoc/io/flutter/plugin/common/BasicMessageChannel.html) | [BasicMessageChannel](https://api.flutter.dev/flutter/services/BasicMessageChannel-class.html) | Encode and decode using a codec.  No parameters       | Yes               | Yes               | Yes via `reply`  |
 
 References
 
