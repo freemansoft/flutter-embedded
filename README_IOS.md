@@ -1,4 +1,4 @@
-# Platform Channels
+# iOS integration in this repository
 
 Goal: Demonstrate Communication between iOS Application and embedded Flutter application
 
@@ -77,46 +77,3 @@ The iOS application listens for _shake_ events so that we could use the standard
 
 1. In iOS, converting the received JSON string to a JSON object.
 2. Diagrams similar to those for the Android version
-
-## FlutterMethodChannel, FlutterEventChannel, FlutterBasicMessageChannel
-
-The V1 version implements native communication via the `basic message channel` implemented on the iOS side with `FlutterBasicMessageChannel`
-
-| iOS Class                                                                                                       | Flutter class                                                                                  |
-| --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| [FlutterMethodChanel](https://api.flutter.dev/ios-embedder/interface_flutter_method_channel.html)               | [MethodChannel](https://api.flutter.dev/flutter/services/MethodChannel-class.html)             |
-| [FlutterEventChannel](https://api.flutter.dev/ios-embedder/interface_flutter_event_channel.html)                | [EventChannel](https://api.flutter.dev/flutter/services/EventChannel-class.html)               |
-| [FlutterBasicMessageChannel](https://api.flutter.dev/ios-embedder/interface_flutter_basic_message_channel.html) | [BasicMessageChannel](https://api.flutter.dev/flutter/services/BasicMessageChannel-class.html) |
-
-### FlutterMethodChannel
-
-Invokes a method on the opposite side.  Uses the codecs show below.
-
-#### FlutterMethodChannel Codecs
-
-| iOS Codec                                                                                                       | Flutter Codec                                                                                  |
-| --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| [FlutterStandardMethodCodec](https://api.flutter.dev/ios-embedder/interface_flutter_standard_method_codec.html) | [StandardMEthodCodec](https://api.flutter.dev/flutter/services/StandardMethodCodec-class.html) |
-| [FlutterJSONMethodCodec](https://api.flutter.dev/ios-embedder/interface_flutter_j_s_o_n_method_codec.html)      | [JSONMethodCodec](https://api.flutter.dev/flutter/services/JSONMethodCodec-class.html)         |
-
-### FlutterEventChannel
-
-ipse lorum
-
-#### EventChannel Codecs
-
-ipse lorum
-
-### FlutterBasicMessage Channel
-
-Supports a single payload with an optional return value.  Uses codecs shown below.
-
-#### Message Channel Codecs
-
-| iOS Codec                                                                                                         | Flutter Codec                                                                                    |
-| ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| [FlutterStandardMessageCodec](https://api.flutter.dev/ios-embedder/interface_flutter_standard_message_codec.html) | [StandardMessageCodec](https://api.flutter.dev/flutter/services/StandardMessageCodec-class.html) |
-| [FlutterBinaryMessageCodec](https://api.flutter.dev/ios-embedder/interface_flutter_binary_codec.html)             | [BinaryCodec](https://api.flutter.dev/flutter/services/BinaryCodec-class.html)                   |
-| [FlutterJSONMessageCodec](https://api.flutter.dev/ios-embedder/interface_flutter_j_s_o_n_message_codec.html)      | [JsonMessageCodec](https://api.flutter.dev/flutter/services/JSONMessageCodec-class.html)         |
-| [FlutterStringCodec](https://api.flutter.dev/ios-embedder/interface_flutter_string_codec.html)                    | [StringCodec](https://api.flutter.dev/flutter/services/StringCodec-class.html)                   |
-

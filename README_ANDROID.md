@@ -1,4 +1,4 @@
-# Platform Channels
+# Android Integration in this repository
 
 Goal: Demonstrate Communication between Android Application and embedded Flutter application
 
@@ -74,50 +74,3 @@ We use the touch area outside the drawing area so that we didn't have to fragmen
   * See <https://medium.com/flutter/flutter-platform-channels-ce7f540a104e>
   * See  <https://github.com/flutter/samples/tree/main/add_to_app/multiple_flutters>
   * See <https://github.com/flutter/samples/blob/main/add_to_app/multiple_flutters/multiple_flutters_android/app/src/main/java/dev/flutter/multipleflutters/DoubleFlutterActivity.kt>
-
-## MethodChannel, EventChannel, BasicMessageChannel
-
-The V1 version implements native communication via the `basic message channel` implemented with `BasicMessageChannel`
-
-| Android Class                                                                                            | Flutter Class                                                                                  |
-| -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| [MethodChannel](https://api.flutter.dev/javadoc/io/flutter/plugin/common/MethodChannel.html)             | [MethodChannel](https://api.flutter.dev/flutter/services/MethodChannel-class.html)             |
-| [EventChannel](https://api.flutter.dev/javadoc/io/flutter/plugin/common/EventChannel.html)               | [EventChannel](https://api.flutter.dev/flutter/services/EventChannel-class.html)               |
-| [BasicMessageChannel](https://api.flutter.dev/javadoc/io/flutter/plugin/common/BasicMessageChannel.html) | [BasicMessageChannel](https://api.flutter.dev/flutter/services/BasicMessageChannel-class.html) |
-
-References
-
-* <https://dave790602.medium.com/introduction-to-communication-between-flutter-and-native-f746c112513d>
-* <https://medium.com/@expertappdevs/how-to-write-native-code-with-platform-channel-in-flutter-033f7da4946f>
-
-### MethodChannel
-
-Invokes a method on the opposite side.  Uses the codecs show below.
-
-#### MethodChannel Codecs
-
-| Android Codec                                                                                            | Flutter Codec                                                                                  |
-| -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| [StandardMethodCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/StandardMethodCodec.html) | [StandardMEthodCodec](https://api.flutter.dev/flutter/services/StandardMethodCodec-class.html) |
-| [JSONMethodCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/JSONMethodCodec.html)         | [JSONMethodCodec](https://api.flutter.dev/flutter/services/JSONMethodCodec-class.html)         |
-
-### EventChannel
-
-ipse lorum
-
-#### EventChannel Codecs
-
-ipse lorum
-
-### BasicMessageChannel
-
-Supports a single payload with an optional return value.  Uses codecs like the JSON codec
-
-#### Message Channel Codecs
-
-| Android Codec                                                                                              | Flutter Codec                                                                                    |
-| ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| [StandardMessageCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/StandardMessageCodec.html) | [StandardMessageCodec](https://api.flutter.dev/flutter/services/StandardMessageCodec-class.html) |
-| [BinaryCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/BinaryCodec.html)                   | [BinaryCodec](https://api.flutter.dev/flutter/services/BinaryCodec-class.html)                   |
-| [JSONMessageCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/JSONMessageCodec.html)         | [JsonMessageCodec](https://api.flutter.dev/flutter/services/JSONMessageCodec-class.html)         |
-| [StringCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/StringCodec.html)                   | [StringCodec](https://api.flutter.dev/flutter/services/StringCodec-class.html)                   |
