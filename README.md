@@ -33,7 +33,7 @@ graph TB;
 
 ```
 
-## Platform specific implementations
+## Platform-specific implementations
 
 Additional details are available for each platform implementation
 
@@ -51,15 +51,17 @@ Communication between the Mobile native code and Flutter happens over platform c
 
 There are three native platform channel types.  V1 of this application uses the `Message Channel`
 
-| Channel type and Flutter class                                                         | Description                                           | Flutter <br/> Native | Native <br/> Flutter | Supports <br/>Return |
-| -------------------------------------------------------------------------------------- | ----------------------------------------------------- | -------------------- | -------------------- | -------------------- |
-| [Method Invocation](https://api.flutter.dev/flutter/services/MethodChannel-class.html) | Invoke method on the other side                       | Yes                  | Yes                  | Via `result`         |
-| [Message](https://api.flutter.dev/flutter/services/BasicMessageChannel-class.html)     | Sends a message to remote listener                    | Yes                  | Yes                  | Via `reply`          |
-| [Event](https://api.flutter.dev/flutter/services/EventChannel-class.html)              | Streams and sinks. Events can flow in both directions | Yes                  | Yes                  | Bidirectional        |
+| Channel type and Flutter class                                                         | Description                                           | Flutter Native | Native Flutter | Return       |
+| -------------------------------------------------------------------------------------- | ----------------------------------------------------- | -------------- | -------------- | ------------ |
+| [Method Invocation](https://api.flutter.dev/flutter/services/MethodChannel-class.html) | Invoke method on the other side                       | Yes            | Yes            | Via `result` |
+| [Message](https://api.flutter.dev/flutter/services/BasicMessageChannel-class.html)     | Sends a message to a remote listener                  | Yes            | Yes            | Via `reply`  |
+| [Event](https://api.flutter.dev/flutter/services/EventChannel-class.html)              | Streams and sinks. Events can flow in both directions | Yes            | Yes            | N/a          |
 
 ### FlutterMethodChannel, FlutterEventChannel, FlutterBasicMessageChannel
 
-Version V1 demonstration code implements native communication via a `message channel`.
+Dart/Flutter, Android and iOS have corresponding `channel` classes for each channel type. The three platform channel implementation classes in Flutter, iOS and, Android are:
+
+The V1 demonstration code in this repository implements native communication via a `message channel`.
 
 | Flutter Class                                                                                  | iOS Class                                                                                                       | Android Class                                                                                            |
 | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
@@ -69,7 +71,7 @@ Version V1 demonstration code implements native communication via a `message cha
 
 ### Method Channel Codecs MethodCodec
 
-Invokes a method on the opposite side.  Uses the codecs shown below.
+Method channels a method on the opposite side.  Method channels use MethodCode implementations.
 
 | Flutter Codec Class                                                                            | iOS Codec Class                                                                                                 | Android Codec Class                                                                                      |
 | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
@@ -79,7 +81,7 @@ Invokes a method on the opposite side.  Uses the codecs shown below.
 
 ### Message Channel Codecs
 
-Supports a single payload with an optional return value. Uses codecs shown below.
+Message channels use MessageCodec Implementations.  Messages are a single payload with an optional return value. Uses codecs shown below.
 
 | Flutter Codec Class                                                                              | iOS Codec Class                                                                                                   | Android Codec Class                                                                                        |
 | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
