@@ -2,9 +2,9 @@
 
 These examples show communication between the Flutter Application and the host / native application via _message channels_.  The same Flutter code is used for all three embeddings with a minor switch statement for Web communication.
 
-## Commmon flow
+## Message flow
 
-This is the platform and implemenation agnostic view that shows that the increment function can happen
+This application uses message channels for mobile platform/Flutter communication. Both Flutter and Native can initiate an increment operation.  The native side always receives a message from Flutter _after_ an increment operation has occured.
 
 ```mermaid
 graph TB;
