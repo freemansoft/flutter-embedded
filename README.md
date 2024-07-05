@@ -7,19 +7,21 @@ These examples show communication between the Flutter Application and the host /
 This is the platform and implemenation agnostic view that shows that the increment function can happen
 
 ```mermaid
-graph TD;
+graph TB;
     subgraph host
-        HostControl[Control]
-        HostChannel[MessageChannel]
-        HostChannel2[MessageChannel]
-        HostListener[Listener]
+        HostControl[Control and UI Listener]
+        HostChannel[Message Channel]
+
+        HostChannel2[Message Channel]
+        HostListener[Message Listener]
     end
 
     subgraph flutter
-        FlutterControl[Control]
-        FlutterChannel[MessageChannel]
-        FlutterChannel2[MessageChannel]
-        FlutterListener[Listener]
+        FlutterControl[Control and UI Listener]
+        FlutterChannel[Message Channel]
+
+        FlutterChannel2[Message Channel]
+        FlutterListener[Message Listener]
         Counter
     end
 
