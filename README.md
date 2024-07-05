@@ -49,15 +49,15 @@ Communication between the Mobile native code and Flutter happens over platform c
 
 There are three native platform channel types.  V1 of this application uses the `Message Channel`
 
-| Channel type and Flutter class                                                                 | Description                                           | Flutter to Native | Native to Flutter | Supports Return  |
-| ---------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------------- | ----------------- | ---------------- |
-| [MethodChannel](https://api.flutter.dev/flutter/services/MethodChannel-class.html)             | Invoke method on the other side                       | Yes               | Yes               | Yes via `result` |
-| [EventChannel](https://api.flutter.dev/flutter/services/EventChannel-class.html)               | Creates a stream. Updates can flow in both directions | No                | Yes               | Bidirectional    |
-| [BasicMessageChannel](https://api.flutter.dev/flutter/services/BasicMessageChannel-class.html) | Encode and decode using a codec.  No parameters       | Yes               | Yes               | Yes via `reply`  |
+| Channel type and Flutter class                                                         | Description                                           | Flutter to Native | Native to Flutter | Supports Return  |
+| -------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------------- | ----------------- | ---------------- |
+| [Method Invocation](https://api.flutter.dev/flutter/services/MethodChannel-class.html) | Invoke method on the other side                       | Yes               | Yes               | Yes via `result` |
+| [Message](https://api.flutter.dev/flutter/services/BasicMessageChannel-class.html)     | Sends a message to remote listener                    | Yes               | Yes               | Yes via `reply`  |
+| [Event](https://api.flutter.dev/flutter/services/EventChannel-class.html)              | Streams and sinks. Events can flow in both directions | Yes               | Yes               | Bidirectional    |
 
 ### FlutterMethodChannel, FlutterEventChannel, FlutterBasicMessageChannel
 
-Version V1 implements native communication via the `basic message channel` implemented on the iOS side with `FlutterBasicMessageChannel`
+Version V1 demonstration code implements native communication via a `message channel`.
 
 | Flutter Class                                                                                  | iOS Class                                                                                                       | Android Class                                                                                            |
 | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
@@ -89,7 +89,7 @@ Supports a single payload with an optional return value. Uses codecs shown below
 
 ### Event Channel
 
-Event channels operate differntly from the Message and Method channels.  They are continuous broadcast streams that use a `MethodCodec`.
+Event channels are continuous broadcast streams that use a `MethodCodec`.
 
 | Flutter Codec Class | iOS Codec Class | Android Codec Class |
 | ------------------- | --------------- | ------------------- |
