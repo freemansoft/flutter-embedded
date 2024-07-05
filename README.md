@@ -65,25 +65,35 @@ Version V1 implements native communication via the `basic message channel` imple
 | [EventChannel](https://api.flutter.dev/flutter/services/EventChannel-class.html)               | [FlutterEventChannel](https://api.flutter.dev/ios-embedder/interface_flutter_event_channel.html)                | [EventChannel](https://api.flutter.dev/javadoc/io/flutter/plugin/common/EventChannel.html)               |
 | [BasicMessageChannel](https://api.flutter.dev/flutter/services/BasicMessageChannel-class.html) | [FlutterBasicMessageChannel](https://api.flutter.dev/ios-embedder/interface_flutter_basic_message_channel.html) | [BasicMessageChannel](https://api.flutter.dev/javadoc/io/flutter/plugin/common/BasicMessageChannel.html) |
 
-#### MethodChannel Codes
+### Method Channel Codecs MethodCodec
 
 Invokes a method on the opposite side.  Uses the codecs show below.
 
-| Flutter Codec Class                                                                            | iOSCodec Class                                                                                                  | Android Codec Class                                                                                      |
+| Flutter Codec Class                                                                            | iOS Codec Class                                                                                                 | Android Codec Class                                                                                      |
 | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| [StandardMEthodCodec](https://api.flutter.dev/flutter/services/StandardMethodCodec-class.html) | [FlutterStandardMethodCodec](https://api.flutter.dev/ios-embedder/interface_flutter_standard_method_codec.html) | [StandardMethodCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/StandardMethodCodec.html) |
+| [MethodCodec Interface](https://api.flutter.dev/flutter/services/MethodCodec-class.html)       | ...                                                                                                             | ...                                                                                                      |
+| [StandardMethodCodec](https://api.flutter.dev/flutter/services/StandardMethodCodec-class.html) | [FlutterStandardMethodCodec](https://api.flutter.dev/ios-embedder/interface_flutter_standard_method_codec.html) | [StandardMethodCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/StandardMethodCodec.html) |
 | [JSONMethodCodec](https://api.flutter.dev/flutter/services/JSONMethodCodec-class.html)         | [FlutterJSONMethodCodec](https://api.flutter.dev/ios-embedder/interface_flutter_j_s_o_n_method_codec.html)      | [JSONMethodCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/JSONMethodCodec.html)         |
 
 ### Message Channel Codecs
 
-Supports a single payload with an optional return value.  Uses codecs shown below.
+Supports a single payload with an optional return value. Uses codecs shown below.
 
 | Flutter Codec Class                                                                              | iOS Codec Class                                                                                                   | Android Codec Class                                                                                        |
 | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| [MessageCodec Interface](https://api.flutter.dev/flutter/services/MessageCodec-class.html)       | ...                                                                                                               | ...                                                                                                        |
 | [StandardMessageCodec](https://api.flutter.dev/flutter/services/StandardMessageCodec-class.html) | [FlutterStandardMessageCodec](https://api.flutter.dev/ios-embedder/interface_flutter_standard_message_codec.html) | [StandardMessageCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/StandardMessageCodec.html) |
 | [BinaryCodec](https://api.flutter.dev/flutter/services/BinaryCodec-class.html)                   | [FlutterBinaryMessageCodec](https://api.flutter.dev/ios-embedder/interface_flutter_binary_codec.html)             | [BinaryCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/BinaryCodec.html)                   |
 | [JsonMessageCodec](https://api.flutter.dev/flutter/services/JSONMessageCodec-class.html)         | [FlutterJSONMessageCodec](https://api.flutter.dev/ios-embedder/interface_flutter_j_s_o_n_message_codec.html)      | [JSONMessageCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/JSONMessageCodec.html)         |
 | [StringCodec](https://api.flutter.dev/flutter/services/StringCodec-class.html)                   | [FlutterStringCodec](https://api.flutter.dev/ios-embedder/interface_flutter_string_codec.html)                    | [StringCodec](https://api.flutter.dev/javadoc/io/flutter/plugin/common/StringCodec.html)                   |
+
+### Event Channel
+
+Event channels operate differntly from the Message and Method channels.  They are continuous broadcast streams that use a `MethodCodec`.
+
+| Flutter Codec Class | iOS Codec Class | Android Codec Class |
+| ------------------- | --------------- | ------------------- |
+| See MethodCodec     | See MethodCodec | See MethodCodec     |
 
 ## V1
 
